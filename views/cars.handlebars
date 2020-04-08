@@ -1,8 +1,9 @@
 <div class="container">
     {{#each cars}}
     <div class="row">
+
         <div class="col-sm-4">
-            <strong>{{make}} Model {{model}}</strong>
+            <a href="/cars/{{VIN}}"><strong>{{make}} Model {{model}}</strong></a>
         </div>
         <div class="col-sm-4">
             Mileage: {{mileage}}
@@ -11,5 +12,6 @@
             Color: {{color}}
         </div>
     </div>
+
     {{/each}}
 </div>
