@@ -1,6 +1,8 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
 
+const connection = require("./config/connection");
+
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -47,28 +49,44 @@ app.get("/", function (req, res) {
 });
 
 app.get("/cars", function (req, res) {
-    //TODO: Run SQL query SELECT * FROM cars;
-  res.render("cars", { cars: cars });
+  connection.query("SELECT * FROM cars", function (err, data) {
+    res.render("cars", { cars: data });
+  });
+});
+
+app.get("/cars/new", function (req, res) {
+  res.render("new-car");
 });
 
 app.get("/cars/:VIN", function (req, res) {
-
-    // TODO: Run SQL query SELECT * FROM cars WHERE VIN = req.params.vin
-  console.log(req.params.VIN);
-  for (let i = 0; i < cars.length; i++) {
-    if (cars[i].VIN === req.params.VIN) {
-      res.render("single-car", cars[i]);
+  connection.query(
+    "SELECT * FROM cars WHERE VIN = ?",
+    [req.params.VIN],
+    function (err, data) {
+      res.render("single-car", data[0]);
     }
-  }
+  );
 });
 
 app.post("/cars", function (req, res) {
-
-    // TODO: Run SQL query to INSERT INTO cars table.
-  const newCar = req.body;
-  cars.push(newCar);
-  console.log(cars);
-  res.json({ success: true });
+  connection.query(
+    "INSERT INTO cars (make, model, VIN, mileage, color) VALUES (?, ?, ?, ?, ?)",
+    [
+      req.body.make,
+      req.body.model,
+      req.body.VIN,
+      req.body.mileage,
+      req.body.color,
+    ],
+    function (err, data) {
+      if (err) {
+        //   throw new Error(err);
+        res.status(500);
+        return res.json(err);
+      }
+      res.json({ success: true });
+    }
+  );
 });
 
 app.listen(PORT, function () {

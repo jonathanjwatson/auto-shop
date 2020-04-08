@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <form id="new-car-form">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="make" placeholder="Make">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="model" placeholder="model">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="VIN" placeholder="VIN">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="mileage" placeholder="Mileage">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="color" placeholder="Color">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$("#new-car-form").on("submit", function(event){
+    event.preventDefault();
+
+    $.ajax("/cars", {
+        type: "POST",
+        data: {
+            make: $("#make").val(),
+            model: $("#model").val(),
+            VIN: $("#VIN").val(),
+            mileage: $("#mileage").val(),
+            color: $("#color").val()
+        }
+    }).then(response => {
+        location.replace("/cars");
+    })
+})
+</script>

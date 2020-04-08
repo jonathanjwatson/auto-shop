@@ -1,0 +1,2 @@
+INSERT INTO cars (make, model, VIN, mileage, color)
+VALUES ("Ford", "F150", "9iyasgdlkjghasdf", 100, "Blue"), ("Ford", "F150", "9iyasgdlkjghasde", 100, "Green"), ("Ford", "F150", "9iyasgdlkjghasdd", 100, "Red")
