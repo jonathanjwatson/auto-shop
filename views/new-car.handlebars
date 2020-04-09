@@ -1,5 +1,10 @@
 <div class="container">
     <div class="row">
+        <div class="alert alert-danger" role="alert" id="err-response" style="display:none">
+            A simple danger alert—check it out!
+        </div>
+    </div>
+    <div class="row">
         <div class="col-sm-6">
             <form id="new-car-form">
                 <div class="form-group">
@@ -24,20 +29,24 @@
 </div>
 
 <script type="text/javascript">
-$("#new-car-form").on("submit", function(event){
-    event.preventDefault();
+    $("#new-car-form").on("submit", function (event) {
+        event.preventDefault();
 
-    $.ajax("/cars", {
-        type: "POST",
-        data: {
-            make: $("#make").val(),
-            model: $("#model").val(),
-            VIN: $("#VIN").val(),
-            mileage: $("#mileage").val(),
-            color: $("#color").val()
-        }
-    }).then(response => {
-        location.replace("/cars");
+        $.ajax("/cars", {
+            type: "POST",
+            data: {
+                make: $("#make").val(),
+                model: $("#model").val(),
+                VIN: $("#VIN").val(),
+                mileage: $("#mileage").val(),
+                color: $("#color").val()
+            }
+        }).then(response => {
+            location.replace("/cars");
+        }).catch(err => {
+            console.log(err.responseJSON.message);
+            {{!-- alert(err.responseJSON.message); --}}
+            $("#err-response").text(err.responseJSON.message).attr("style", "display:block");
+        })
     })
-})
 </script>
